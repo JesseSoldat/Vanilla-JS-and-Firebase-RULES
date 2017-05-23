@@ -185,7 +185,30 @@ function getLocation(loc = '-KkbkuYpF-0Y4d8_huN2') {
 		 	li.appendChild(document.createTextNode(data[key]));
 		});
 	});
+}
 
+function getLocations() {
+	reqLocations = firebase.database().ref('locations');
+	
+	reqLocations.on('value', function(snapshot) {
+
+  snapshot.forEach(function(childSnapshot) {
+    var childKey = childSnapshot.key;
+    var childData = childSnapshot.val();
+    console.log(childData);
+    let allLocations = document.getElementById('allLocations');
+
+   	Object.keys(childData).forEach(function(key) {
+  		// console.log(key, data[key]);
+  		var li = document.createElement("li");
+			locationData.appendChild(li);
+		 	li.appendChild(document.createTextNode(key+': \u00a0\u00a0'));
+		 	li.appendChild(document.createTextNode(childData[key]));
+		});
+
+  
+  });
+});
 }
 
 
@@ -198,12 +221,12 @@ function getLocation(loc = '-KkbkuYpF-0Y4d8_huN2') {
 //       }  
 //     },
 //       "locations": {
+//       ".read": "true",
 //       "$uid": {
 //         ".write": "$uid === auth.uid",
-//         ".read": "true"
+        
 //       }  
 //     }
 //   }
 // }
-
 
