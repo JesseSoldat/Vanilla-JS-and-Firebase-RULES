@@ -1,70 +1,143 @@
 let started = false; 
 
-function sendData() {
+
+function login() {
 
 	let email = document.getElementById("email").value;
 	let pass = document.getElementById("pass").value;
 
 	firebase.auth().signInWithEmailAndPassword(email, pass).catch(function(error) {
-	  // Handle Errors here.
 	  var errorCode = error.code;
 	  var errorMessage = error.message;
-	  // ...
+	  console.log(errorMessage);
 	});
 }
 
 	function checkUser() {
 		firebase.auth().onAuthStateChanged(function(user) {
+			let checkUserName = document.getElementById('checkUserName');
+			let checkUserId = document.getElementById('checkUserId');
 		  if (user) {
+		  	if (user.uid === 'HBTaJt057Bf63oS771gah1allYe2') {
+		  		console.log('Welcome Jesse');
+		  		checkUserName.innerText = 'Welcome Jesse your ID is:';
+		  	} else if(user.uid === '5GZF8I5L0WSDShiKnOWxoQ1JjSg2') {
+		  		console.log('Welcome Mark');
+		  		checkUserName.innerText = 'Welcome Mark your ID is:';
+		  	} else {
+		  		console.log('Welcome User');
+		  		checkUserName.innerText = 'Welcome User your ID is:';
+		  	}
 		    console.log(user.uid);
+		  	checkUserId.innerText = user.uid;
 		  } else {
 		    console.log('no user');
+		  	checkUserName.innerText = 'No User Could Be Found';
+
 		  }
 		});
-
 	}
 
-	function saveData(name, email) {
+	function jesseSaveData(name, email) {
 		//Using set() overwrites data at the specified location, including any child nodes.
-			firebase.database().ref('temp/HBTaJt057Bf63oS771gah1allYe2').set({
+		//ONLY JESSE CAN SAVE DATA 	
+		
+		firebase.database().ref('temp/HBTaJt057Bf63oS771gah1allYe2').set({
 	    username: name,
 	    email: email,
 	    number: Math.floor(Math.random() * 100)
 	  }).then(() => {
-	  	getData()
-	  }).catch(err => console.log(err));
+	  	getJesseData()
+	  }).catch(err => {
+	  	console.log('Sorry only Jesse can save data here');
+	  	console.log(err);
+	  	let JesseSaveData = document.getElementById('jesseSaveData');
+			 JesseSaveData.innerText = '\u00a0 PERMISSION_DENIED only Jesse can write data here';
+	  });
 	}
 
-		function noAuthSaveData(name, email) {
-			firebase.database().ref('temp/HBTaJt057Bf63oS771gah1allY').set({
+	function markSaveData(name, email) {
+		//Using set() overwrites data at the specified location, including any child nodes.
+		//ONLY MARK CAN SAVE DATA 	
+		firebase.database().ref('temp/5GZF8I5L0WSDShiKnOWxoQ1JjSg2').set({
 	    username: name,
 	    email: email,
 	    number: Math.floor(Math.random() * 100)
 	  }).then(() => {
-	  }).catch(err => console.log(err));
+	  	getMarkData()
+	  }).catch(err => {
+	  	console.log('Sorry only Mark can save data here');
+	  	console.log(err)
+	  	let MarkSaveData = document.getElementById('markSaveData');
+			MarkSaveData.innerText = '\u00a0 PERMISSION_DENIED only Mark can write data here';
+	  });
 	}
-
-
-	function getData() {
+	
+	function getJesseData() {
 		//on
 		if (started === false) {
 			var temp = firebase.database().ref('temp/HBTaJt057Bf63oS771gah1allYe2');
 			temp.on('value', function(snapshot) {
+				console.log('This is Jesse\'s public data');
 			  console.log(snapshot.val());
+			  let jesseSaveData = document.getElementById('jesseSaveData');
+			  jesseSaveData.innerText = '\u00a0 SAVED \u00a0 \u00a0';
+			  jesseSaveData.innerText += snapshot.val().email + '\u00a0' + '|' + '\u00a0';
+			  jesseSaveData.innerText += snapshot.val().username + '\u00a0' + '|' + '\u00a0';
+			  jesseSaveData.innerText += snapshot.val().number;
 			});
 		}
 		started = true;	
 	}
 
-	function noAuthReadData() {
+		function getMarkData() {
 		//on
+		if (started === false) {
+			var temp = firebase.database().ref('temp/5GZF8I5L0WSDShiKnOWxoQ1JjSg2');
+			temp.once('value', function(snapshot) {
+				console.log('This is Mark\'s public data');
+			  console.log(snapshot.val());
+			  let MarkSaveData = document.getElementById('markSaveData');
+			  MarkSaveData.innerText = '\u00a0 SAVED \u00a0 \u00a0';
+			  MarkSaveData.innerText += snapshot.val().email + '\u00a0' + '|' + '\u00a0';
+			  MarkSaveData.innerText += snapshot.val().username + '\u00a0' + '|' + '\u00a0';
+			  MarkSaveData.innerText += snapshot.val().number;
+			});
+		}	
+	}
+
+	function noAuthReadJesseData() {
 		//HBTaJt057Bf63oS771gah1allYe2' = jesse@jesse.com
 		//sign out and log in with a different UID
 		//5GZF8I5L0WSDShiKnOWxoQ1JjSg2 = mark@mark.com
 		var temp = firebase.database().ref('temp/HBTaJt057Bf63oS771gah1allYe2');
 		temp.once('value', function(snapshot) {
-			console.log('Different User');
+			console.log('No Auth User can Read Data');
+		  console.log(snapshot.val().email);
+
+		  let jesseReadData = document.getElementById('jesseReadData');
+		  jesseReadData.innerText = '\u00a0 READ \u00a0 \u00a0';
+		  jesseReadData.innerText += snapshot.val().email + '\u00a0' + '|' + '\u00a0';
+		  jesseReadData.innerText += snapshot.val().username + '\u00a0' + '|' + '\u00a0';
+		  jesseReadData.innerText += snapshot.val().number;
+		});	
+	}
+
+	function noAuthReadMarkData() {
+		//5GZF8I5L0WSDShiKnOWxoQ1JjSg2 = mark@mark.com
+		//sign out and log in with a different UID
+		//HBTaJt057Bf63oS771gah1allYe2' = jesse@jesse.com
+		var temp = firebase.database().ref('temp/5GZF8I5L0WSDShiKnOWxoQ1JjSg2');
+		temp.once('value', function(snapshot) {
+			console.log('No Auth User can Read Data');
 		  console.log(snapshot.val());
+
+		  let markReadData = document.getElementById('markReadData');
+		  markReadData.innerText = '\u00a0 READ \u00a0 \u00a0';
+		  markReadData.innerText += snapshot.val().email + '\u00a0' + '|' + '\u00a0';
+		  markReadData.innerText += snapshot.val().username + '\u00a0' + '|' + '\u00a0';
+		  markReadData.innerText += snapshot.val().number;
+
 		});	
 	}
 

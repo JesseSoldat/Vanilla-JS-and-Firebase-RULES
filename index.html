@@ -18,22 +18,52 @@
 	<title></title>
 </head>
 <body>
-<h3>Login</h3>
-
+	<h2>Login</h2>
+	<hr>
 	<input type="text" name="email" id="email" placeholder="email">
 	<input type="text" name="password" id="pass" placeholder="password">
-	<button type="click" onclick="sendData()">Submit</button>
-	<br><br>
+	<button type="click" onclick="login()">Login</button>
+	<h4 style="display: inline-block">jesse@jesse.com / jesse123</h4>
+	<h2 style="display: inline-block">|</h2>
+	<h4 style="display: inline-block">mark@mark.com / mark123</h4>
+	<br>
 	<button type="button" onclick="checkUser()">Check User</button>
-	<br><br>
-	<button type="button" onclick="saveData('ted', 'ted@ted.com')">	Save Data
+	<p style="display: inline-block">
+		<strong id="checkUserName"></strong>
+	</p>
+	<p id="checkUserId" style="display: inline-block"></p>
+	<br>
+
+	<button type="button" onclick="jesseSaveData('jesse', 'jesse@jesse.com')">	
+		Jesse Save Data (WRITE)
 	</button>
+	<p style="display: inline-block">
+		<strong id="jesseSaveData"></strong>
+	</p>
 	<br><br>
-		<button type="button" onclick="noAuthSaveData('bill', 'bill@bill.com')">	No Auth try to Save Data
+
+	<button type="button" onclick="markSaveData('mark', 'mark@mark.com')">	
+		Mark Save Data (WRITE)
 	</button>
+	<p style="display: inline-block">
+		<strong id="markSaveData"></strong>
+	</p>
 	<br><br>
-		<button type="button" onclick="noAuthReadData()">	No Auth try to Read Data
+
+		<button type="button" onclick="noAuthReadJesseData()">	Read Jesse's Data
 	</button>
+	<p style="display: inline-block">
+		<strong id="jesseReadData"></strong>
+	</p>
+	<br><br>
+
+	<button type="button" onclick="noAuthReadMarkData()">	Read Mark's Data
+	</button>
+
+	<p style="display: inline-block">
+		<strong id="markReadData"></strong>
+	</p>
+
 
 
 
