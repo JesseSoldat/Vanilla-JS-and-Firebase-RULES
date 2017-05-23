@@ -201,12 +201,11 @@ function getLocations() {
    	Object.keys(childData).forEach(function(key) {
   		// console.log(key, data[key]);
   		var li = document.createElement("li");
-			locationData.appendChild(li);
+			allLocations.appendChild(li);
 		 	li.appendChild(document.createTextNode(key+': \u00a0\u00a0'));
 		 	li.appendChild(document.createTextNode(childData[key]));
 		});
 
-  
   });
 });
 }
