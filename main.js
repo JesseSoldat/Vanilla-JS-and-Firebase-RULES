@@ -157,4 +157,53 @@ WRITE: HBTaJt057Bf63oS771gah1allYe2' = jesse@jesse.com
 }
 */
 
+//-----------------------------Location
+//-KkmFBKDZG0aNfgPZ_NP
+
+function getLocation(loc = '-KkbkuYpF-0Y4d8_huN2') {
+	let location;
+	let locationRef = document.getElementById('location').value;
+
+	if(locationRef.trim() === '') {
+		location = loc;
+	} else {
+		location = locationRef;
+	}
+	console.log(location);
+	reqLocation = firebase.database().ref('locations/' + location);
+	reqLocation.once('value', (snapshot) => {
+		console.log(snapshot.val());
+		let data = snapshot.val();
+
+		let locationData = document.getElementById('locationData');
+
+		Object.keys(data).forEach(function(key) {
+  		// console.log(key, data[key]);
+  		var li = document.createElement("li");
+			locationData.appendChild(li);
+		 	li.appendChild(document.createTextNode(key+': \u00a0\u00a0'));
+		 	li.appendChild(document.createTextNode(data[key]));
+		});
+	});
+
+}
+
+
+// {
+//   "rules": {
+//     "temp": {
+//       "$uid": {
+//         ".write": "$uid === auth.uid",
+//         ".read": "true",
+//       }  
+//     },
+//       "locations": {
+//       "$uid": {
+//         ".write": "$uid === auth.uid",
+//         ".read": "true"
+//       }  
+//     }
+//   }
+// }
+
 
